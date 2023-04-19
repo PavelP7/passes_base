@@ -9,8 +9,14 @@ class Users(models.Model):
 
 class Coords(models.Model):
     latitude = models.FloatField()
-    longtitude = models.FloatField()
+    longitude = models.FloatField()
     height = models.IntegerField()
+
+class Levels(models.Model):
+    winter = models.TextField(max_length=2, blank=True)
+    summer = models.TextField(max_length=2, blank=True)
+    autumn = models.TextField(max_length=2, blank=True)
+    spring = models.TextField(max_length=2, blank=True)
 
 class PerevalAdded(models.Model):
     NEW = 'NW'
@@ -25,20 +31,20 @@ class PerevalAdded(models.Model):
         (REJECTED, 'rejected')
     ]
 
-    date_added = models.DateTimeField()
-    beautyTitle = models.TextField()
+    add_time = models.TextField(default="")
+    beauty_title = models.TextField()
     title = models.TextField()
     other_titles = models.TextField()
     connect = models.TextField(blank=True)
     coords = models.OneToOneField(Coords, on_delete=models.CASCADE)
-    level_winter = models.TextField(max_length=2, blank=True)
-    level_summer = models.TextField(max_length=2, blank=True)
-    level_autumn = models.TextField(max_length=2, blank=True)
-    level_spring = models.TextField(max_length=2, blank=True)
+    level = models.OneToOneField(Levels, on_delete=models.CASCADE)
     status = models.CharField(choices=STATES, default=NEW)
 
+def upload_to(instance, filename):
+    return 'images/{pereval}'.format(pereval=instance.pereval.title)
+
 class Image(models.Model):
-    data = models.ImageField(upload_to='images/')
+    data = models.ImageField(upload_to=upload_to, blank=True)
     title = models.TextField()
     pereval = models.ForeignKey(PerevalAdded, on_delete=models.CASCADE)
 
