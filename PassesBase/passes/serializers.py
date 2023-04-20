@@ -1,5 +1,7 @@
 from .models import *
 from rest_framework import serializers
+import base64
+from django.core.files.base import ContentFile
 
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,9 +19,11 @@ class LevelsSerializer(serializers.ModelSerializer):
         fields = ['winter', 'summer', 'autumn', 'spring']
 
 class ImageSerializer(serializers.ModelSerializer):
+    data = serializers.CharField(max_length=None)
+
     class Meta:
         model = Image
-        fields = ['title']
+        fields = ['title', 'data']
 
 class PerevalSerializer(serializers.ModelSerializer):
     coords = CoordsSerializer()
@@ -40,6 +44,10 @@ class PerevalSerializer(serializers.ModelSerializer):
         level = Levels.objects.create(**level_data)
         pereval = PerevalAdded.objects.create(coords=coords, level=level, **validated_data)
         for image_data in images_data:
-            Image.objects.create(pereval=pereval, **image_data)
+            img = image_data['data']
+            title = image_data['title']
+            decode = base64.b64decode(img)
+            data = ContentFile(decode, name=title)
+            Image.objects.create(pereval=pereval, data=data, title=title)
 
         return pereval

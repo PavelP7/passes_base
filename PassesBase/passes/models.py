@@ -41,7 +41,7 @@ class PerevalAdded(models.Model):
     status = models.CharField(choices=STATES, default=NEW)
 
 def upload_to(instance, filename):
-    return 'images/{pereval}'.format(pereval=instance.pereval.title)
+    return 'images/{pereval}/{filename}'.format(pereval=instance.pereval.title, filename=filename)
 
 class Image(models.Model):
     data = models.ImageField(upload_to=upload_to, blank=True)
