@@ -30,3 +30,16 @@ class PerevalViewset(viewsets.ViewSet):
             return JsonResponse({"status": 500, "message": "Ошибка подключения к базе данных", "id": None})
 
         return JsonResponse({"status": 200, "message": None, "id": pereval_id})
+
+    def list(self, request, *args, **kwargs):
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        return JsonResponse({"status": 200})
+
+    def retrieve(self, request, pk=None):
+        pereval = PerevalAdded.objects.filter(pk=pk)
+        if pereval.exists():
+            pereval = pereval.first()
+            response = PerevalSerializer(pereval).data
+            return JsonResponse(response)
+
+        return JsonResponse({"status": 500, "message": "Ошибка подключения к базе данных", "id": None})

@@ -25,6 +25,13 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = ['title', 'data']
 
+    def to_representation(self, instance):
+        self.fields.pop('data')
+        data = super(ImageSerializer, self).to_representation(instance)
+        data['data'] = Image.objects.get(pk=instance.pk).data.url
+
+        return data
+
 class PerevalSerializer(serializers.ModelSerializer):
     coords = CoordsSerializer()
     images = ImageSerializer(many=True)
@@ -51,3 +58,12 @@ class PerevalSerializer(serializers.ModelSerializer):
             Image.objects.create(pereval=pereval, data=data, title=title)
 
         return pereval
+
+    def to_representation(self, instance):
+        self.fields.pop('images')
+        data = super(PerevalSerializer, self).to_representation(instance)
+        queryset = Image.objects.filter(pereval__pk=instance.pk)
+        data['images'] = ImageSerializer(queryset, many=True).data
+        data['status'] = PerevalAdded.objects.filter(pk=instance.pk).first().get_status_display()
+
+        return data
