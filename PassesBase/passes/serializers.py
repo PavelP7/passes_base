@@ -67,3 +67,35 @@ class PerevalSerializer(serializers.ModelSerializer):
         data['status'] = PerevalAdded.objects.filter(pk=instance.pk).first().get_status_display()
 
         return data
+
+    def update(self, instance, validated_data):
+        images_data = validated_data.pop('images')
+        coords_data = validated_data.pop('coords')
+        level_data = validated_data.pop('level')
+
+        instance.level.winter = level_data.get("winter", instance.level.winter)
+        instance.level.summer = level_data.get("summer", instance.level.summer)
+        instance.level.autumn = level_data.get("autumn", instance.level.autumn)
+        instance.level.spring = level_data.get("spring", instance.level.spring)
+        instance.level.save()
+
+        instance.coords.latitude = coords_data.get("latitude", instance.coords.latitude)
+        instance.coords.longitude = coords_data.get("longitude", instance.coords.longitude)
+        instance.coords.height = coords_data.get("height", instance.coords.height)
+        instance.coords.save()
+
+        instance.add_time = validated_data.get("add_time", instance.add_time)
+        instance.beauty_title = validated_data.get("beauty_title", instance.beauty_title)
+        instance.title = validated_data.get("title", instance.title)
+        instance.other_titles = validated_data.get("other_titles", instance.other_titles)
+        instance.connect = validated_data.get("connect", instance.connect)
+        instance.save()
+
+        for instance_image in Image.objects.filter(pereval=instance):
+            image_data = images_data.pop(0)
+            instance_image.title = image_data.get("title", instance_image.title)
+            decode = base64.b64decode(image_data.get("data"))
+            instance_image.data = ContentFile(decode, name=instance_image.title)
+            instance_image.save()
+
+        return instance
