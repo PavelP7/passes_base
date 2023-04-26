@@ -51,3 +51,7 @@ class Image(models.Model):
 class PerevalAreas(models.Model):
     id_parent = models.IntegerField()
     title = models.TextField()
+
+class UserPereval(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    pereval = models.ForeignKey(PerevalAdded, on_delete=models.CASCADE)
