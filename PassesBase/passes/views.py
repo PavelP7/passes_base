@@ -58,12 +58,12 @@ class PerevalViewset(viewsets.ViewSet):
         return JsonResponse(status=500, data={"status": 500, "message": "Ошибка подключения к базе данных", "id": None})
 
     def patch(self, request, pk=None):
-        pereval = PerevalAdded.objects.get(pk=pk)
+        pereval = PerevalAdded.objects.filter(pk=pk)
         data = request.data
         try:
-            if pereval:
+            if pereval.exists():
                 user_data = data.pop('user')
-                pereval_serializer = PerevalSerializer(pereval, data=data)
+                pereval_serializer = PerevalSerializer(pereval.first(), data=data)
                 if pereval_serializer.is_valid():
                     pereval_serializer.save()
                 else:
@@ -71,10 +71,10 @@ class PerevalViewset(viewsets.ViewSet):
             else:
                 raise PerevalDoesntExist
         except IncorrectFields:
-            return JsonResponse(status=400, data={"status": 0, "message": "Некорректные данные запроса"})
+            return JsonResponse(status=400, data={"state": 0, "message": "Некорректные данные запроса"})
         except PerevalDoesntExist:
-            return JsonResponse(status=400, data={"status": 0, "message": "Обновление несуществующей записи"})
+            return JsonResponse(status=400, data={"state": 0, "message": "Обновление несуществующей записи"})
         except:
-            return JsonResponse(status=500, data={"status": 0, "message": "Ошибка подключения к базе данных"})
+            return JsonResponse(status=500, data={"state": 0, "message": "Ошибка подключения к базе данных"})
 
-        return JsonResponse(status=200, data={"status": 1, "message": None})
+        return JsonResponse(status=200, data={"state": 1, "message": None})
