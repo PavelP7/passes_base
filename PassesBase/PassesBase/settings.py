@@ -61,7 +61,7 @@ ROOT_URLCONF = 'PassesBase.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR, 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,6 +93,9 @@ DATABASES = {
         'PASSWORD': os.getenv('FSTR_DB_PASS'),
         'HOST': os.getenv('FSTR_DB_HOST'),
         'PORT': os.getenv('FSTR_DB_PORT'),
+        'TEST': {
+            'NAME': os.getenv('FSTR_DB_TEST_NAME')
+        }
     }
 }
 
@@ -140,3 +143,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+SITE_URL = "http://127.0.0.1:8000/"

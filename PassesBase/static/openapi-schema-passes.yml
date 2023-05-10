@@ -1,0 +1,232 @@
+openapi: 3.0.2
+info:
+  title: 'Base of passes'
+  version: '0.1'
+paths:
+  /passes/:
+    post:
+      operationId: createPereval
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pereval'
+      responses:
+        '200':
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
+          description: 'Pereval is created'
+        '400':
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
+          description: 'Bad Request'
+        '500':
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
+          description: 'Database error'
+      tags:
+      - passes
+  /passes/{id}/:
+    get:
+      operationId: detailPereval
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this pass.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pereval'
+          description: ''
+        '500':
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
+          description: 'Database error'
+      tags:
+        - passes_by_id
+    patch:
+      operationId: updatePereval
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this pass.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pereval'
+      responses:
+        '200':
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
+          description: 'Updating is correct'
+        '400':
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
+          description: 'Bad Request'
+        '500':
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
+          description: 'Database error'
+      tags:
+      - passes_update
+  /passes/?user_email=email/:
+    get:
+      operationId: detailPereval
+      description: ''
+      parameters:
+        - in: query
+          name: user_email
+          schema:
+            type: string
+            format: email
+          required: true
+          description: User email
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseByEmail'
+          description: ''
+        '500':
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response'
+          description: 'Database error'
+      tags:
+        - passes_by_user_email
+components:
+  schemas:
+    Pereval:
+      type: object
+      properties:
+        add_time:
+          type: string
+        beauty_title:
+          type: string
+        title:
+          type: string
+        other_titles:
+          type: string
+        connect:
+          type: string
+        coords:
+          type: object
+          properties:
+            latitude:
+              type: number
+              format: float
+            longitude:
+              type: number
+              format: float
+            height:
+              type: integer
+        level:
+          type: object
+          properties:
+            winter:
+              type: string
+              maxLength: 2
+            summer:
+              type: string
+              maxLength: 2
+            autumn:
+              type: string
+              maxLength: 2
+            spring:
+              type: string
+              maxLength: 2
+        status:
+          type: string
+          maxLength: 2
+          readOnly: true
+        images:
+          type: array
+          items:
+            image:
+              type: object
+              properties:
+                data:
+                  type: string
+                title:
+                  type: string
+            required:
+            - data
+            - title
+        user:
+          type: object
+          writeOnly: true
+          properties:
+            email:
+              type: string
+              format: email
+            fam:
+              type: string
+            name:
+              type: string
+            otc:
+              type: string
+            phone:
+              type: string
+              maxLength: 12
+          required:
+          - email
+          - fam
+          - name
+          - otc
+          - phone
+      required:
+      - add_time
+      - beauty_title
+      - title
+      - other_titles
+      - connect
+      - coords
+      - level
+    Response:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        id:
+          type: integer
+      required:
+      - status
+      - message
+    ResponseByEmail:
+      type: object
+      properties:
+        pereval:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pereval'

@@ -2,6 +2,7 @@ from .models import *
 from rest_framework import serializers
 import base64
 from django.core.files.base import ContentFile
+from PassesBase.settings import SITE_URL
 
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,7 +29,7 @@ class ImageSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         self.fields.pop('data')
         data = super(ImageSerializer, self).to_representation(instance)
-        data['data'] = Image.objects.get(pk=instance.pk).data.url
+        data['data'] = SITE_URL[:-1] + Image.objects.get(pk=instance.pk).data.url
 
         return data
 
