@@ -18,12 +18,13 @@
 ## Содержание
 1. [О проекте](#О-проекте)
    * [Стек](#Стек)
-2. [Начало работы](#Начало-работы)
+1. [Начало работы](#Начало-работы)
    * [Установка](#Установка)
-3. [Как пользоваться](#Как-пользоваться)
+1. [Как пользоваться](#Как-пользоваться)
    * [Запросы по REST API](#Запросы-по-REST-API)
    * [Swagger](#Swagger)
-4. [Загрузка с хостинга](#Загрузка-с-хостинга)
+   * [Unittest](#Unit-test)
+1. [Загрузка с хостинга](#Загрузка-с-хостинга)
 
 <!-- ABOUT THE PROJECT -->
 ## О проекте
@@ -45,6 +46,8 @@
 * [![Python][Python.com]][Python-url]
 * [![Django][Django.com]][Django-url]
 * [![Swagger][Swagger.com]][Swagger-url]
+* [![PostgreSQL][Postgres.com]][Postgres-url]
+* [![Unittest][Unittest.com]][Unittest-url]
 
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
 
@@ -182,6 +185,17 @@ cd PassesBase
  Схема формирования запросов также описана в файле *openapi-schema-passes.yml*.
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
 
+### Unittest
+
+Проект содержит набор тестов для проверки корректности вносимых изменений в модели *test_models.py* и в обработку запросов по REST API *test_rest_api.py* .
+
+Для запуска всех тестов введите ```python manage.py test```.
+
+Для запуска определенного набора тестов введите  
+```python manage.py test --pattern="test_<название>.py"```.
+
+<p align="right">(<a href="#readme-top">наверх</a>)</p>
+
 ## Загрузка с хостинга
 Проект опубликован на сервисе *Yandex Cloud*. Для загрузки проекта с хостинга можно воспользоваться следующими командами:
 * получить список объектов бакета
@@ -202,3 +216,7 @@ https://storage.yandexcloud.net/fstr-pereval-db/{key}
 [Django-url]: https://github.com/django
 [Python.com]: https://img.shields.io/badge/python-white?style=for-the-badge&logo=python&logoColor=blue
 [Python-url]: https://python.org 
+[Unittest.com]: https://img.shields.io/badge/Unittest-white?style=for-the-badge&logo=test&logoColor=red
+[Unittest-url]: https://docs.djangoproject.com/en/2.1/topics/testing
+[Postgres.com]: https://img.shields.io/badge/PostgreSQL-white?style=for-the-badge&logo=postgresql&logoColor=blue
+[Postgres-url]: https://www.postgresql.org
