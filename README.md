@@ -23,7 +23,7 @@
 1. [Как пользоваться](#Как-пользоваться)
    * [Запросы по REST API](#Запросы-по-REST-API)
    * [Swagger](#Swagger)
-   * [Unittest](#Unit-test)
+   * [Unittest](#Unittest)
 1. [Загрузка с хостинга](#Загрузка-с-хостинга)
 
 <!-- ABOUT THE PROJECT -->
@@ -200,11 +200,11 @@ cd PassesBase
 Проект опубликован на сервисе *Yandex Cloud*. Для загрузки проекта с хостинга можно воспользоваться следующими командами:
 * получить список объектов бакета
 ```sh
-https://storage.yandexcloud.net/fstr-pereval-db?list-type=2&encoding-type=url&start-after=
+https://storage.yandexcloud.net/passes-base?list-type=2&encoding-type=url&start-after=
 ```
 * получить объект из бакета ({key} - наименование объекта)
 ```sh
-https://storage.yandexcloud.net/fstr-pereval-db/{key}
+https://storage.yandexcloud.net/passes-base/{key}
 ```
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
 
